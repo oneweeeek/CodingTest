@@ -19,7 +19,7 @@ import static java.lang.Integer.*;
  * */
 public class Main {
 
-	static int n, m, map[][], answer;
+	static int n, m, map[][], answer,numbering;
 	static int parents[];
 	static boolean visited[][];
 	static ArrayList<Edge> edges;
@@ -65,7 +65,7 @@ public class Main {
 	}
 
 	// 대륙 넘버링 지어주기
-	static void continent(int numbering) {
+	static void continent() {
 
 		while (!q.isEmpty()) {
 			Coordinate cur = q.poll();
@@ -161,12 +161,13 @@ public class Main {
 		q = new ArrayDeque<Coordinate>();
 		visited = new boolean[n][m];
 		// 대륙 넘버링
-		int numbering = 2;
+		numbering = 2;
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				if (map[i][j] == 1) {
 					q.add(new Coordinate(i, j, 0));
-					continent(numbering++);
+					continent();
+					numbering++;
 				}
 
 			}
@@ -219,25 +220,30 @@ public class Main {
 //			System.out.println();
 //		}
 
-		parents = new int[numbering];
-		for (int i = 0; i < numbering; i++) {
+		parents = new int[numbering+1];
+		for (int i = 2; i <= numbering; i++) {
 			parents[i] = -1;
-		} // Arrays.fill(parents, -1);
+		}
 
 		int cnt = 0, cost = 0;
 		for (Edge edge : edges) {
 			if (union(edge.from, edge.to)) {
 				cost += edge.weight;
+				if(++cnt == numbering-3) break;
 			}
 		}
-		answer = cost;
-		int a = findSet(2);
-		for (int i = 2; i < numbering; i++) {
-			if (a != findSet(i)) {
-				answer = -1;
-				break;
-			}
+		if (cnt != numbering - 3) {  
+		    System.out.println(-1);  // MST를 만들 수 없는 경우 -1 출력
+		} else {
+		    answer = cost;  // 총 비용 저장
+		    System.out.println(answer);  // 결과 출력
 		}
-		System.out.println(answer);
+//		int a = findSet(2);
+//		for (int i = 2; i < numbering; i++) {
+//			if (a != findSet(i)) {
+//				answer = -1;
+//				break;
+//			}
+//		}
 	}
 }
