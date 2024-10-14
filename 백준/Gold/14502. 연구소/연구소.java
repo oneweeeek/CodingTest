@@ -4,7 +4,6 @@ import static java.lang.Integer.*;
 import java.awt.Point;
 public class Main {
 	static int n,m,map[][],copy[][],result;
-	static boolean[][] visited;
 	static boolean[] IsWall;
 	static int dx[]= {-1,1,0,0};
 	static int dy[]= {0,0,-1,1};
@@ -33,9 +32,7 @@ public class Main {
 	static void bfs() {
 		copy = new int[n][m];
         for(int i=0; i<n; i++) {
-            for(int j=0; j<m; j++) {
-                copy[i][j] = map[i][j];  
-            }
+        	copy[i] = map[i].clone();
         }
 		// 벽세우기
 		for(int i = 0;i<blankList.size();i++) {
@@ -45,20 +42,18 @@ public class Main {
 			}
 		}
 		q = new ArrayDeque<Point>();
-		visited = new boolean[n][m];
 		for(Point virus : virusList) {
 			q.add(virus);
 		}
 		while(!q.isEmpty()) {
 			Point virus = q.poll();
 			copy[virus.x][virus.y] = 2;
-			visited[virus.x][virus.y] = true;
 			
 			for(int d=0;d<4;d++) {
 				int nx = virus.x+dx[d];
 				int ny = virus.y+dy[d];
 				
-				if(!isInRange(nx, ny) || visited[nx][ny]) {
+				if(!isInRange(nx, ny)) {
 					continue;
 				}
 				if(copy[nx][ny] == 0) {
@@ -74,7 +69,7 @@ public class Main {
 				}
 			}
 		}
-		if(count > result) result = count;
+		result = Math.max(count, result);
 	}
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
