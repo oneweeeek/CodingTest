@@ -40,35 +40,45 @@ public class Main {
 			return;
 		}
 
-		// 가로 상태
 		if (direction == 0) {
-			if (isInRange(x, y + 1) && map[x][y + 1] == 0) {
+			if (!isInRange(x, y + 1) || map[x][y + 1] == 1) {
+				return;
+			} else {
 				dfs(x, y + 1, 0);
+				if (!isInRange(x + 1, y + 1) || map[x + 1][y + 1] == 1 || map[x + 1][y] == 1) {
+					return;
+				} else {
+					dfs(x + 1, y + 1, 2);
+				}
 			}
-			if (isInRange(x + 1, y + 1) && map[x + 1][y + 1] == 0 && map[x][y + 1] == 0 && map[x + 1][y] == 0) {
-				dfs(x + 1, y + 1, 2);
+		} else if (direction == 1) {
+			// 세로상태
+			if (!isInRange(x + 1, y) || map[x + 1][y] == 1) {
+				return;
+			} else {
+				dfs(x + 1, y, 1);
+				if (!isInRange(x + 1, y + 1) || map[x + 1][y + 1] == 1 || map[x][y + 1] == 1) {
+					return;
+				} else {
+					dfs(x + 1, y + 1, 2);
+				}
 			}
-		}
-		// 세로 상태
-		else if (direction == 1) {
-			if (isInRange(x + 1, y) && map[x + 1][y] == 0) {
+		} else if (direction == 2) {
+			// 대각선상태
+			if (!isInRange(x+1, y + 1) || map[x][y + 1] == 1 || map[x + 1][y + 1] == 1 || map[x+1][y] == 1) {
+				
+			} else {
+				dfs(x+1, y + 1, 2);
+			}
+			if (!isInRange(x + 1, y) || map[x + 1][y] == 1) {
+			} else {
 				dfs(x + 1, y, 1);
 			}
-			if (isInRange(x + 1, y + 1) && map[x + 1][y + 1] == 0 && map[x][y + 1] == 0 && map[x + 1][y] == 0) {
-				dfs(x + 1, y + 1, 2);
-			}
-		}
-		// 대각선 상태
-		else if (direction == 2) {
-			if (isInRange(x, y + 1) && map[x][y + 1] == 0) {
+			if (!isInRange(x, y + 1) || map[x][y + 1] == 1) {
+			} else {
 				dfs(x, y + 1, 0);
-			}
-			if (isInRange(x + 1, y) && map[x + 1][y] == 0) {
-				dfs(x + 1, y, 1);
-			}
-			if (isInRange(x + 1, y + 1) && map[x + 1][y + 1] == 0 && map[x][y + 1] == 0 && map[x + 1][y] == 0) {
-				dfs(x + 1, y + 1, 2);
 			}
 		}
 	}
+
 }
