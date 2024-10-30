@@ -4,8 +4,8 @@ import static java.lang.Integer.*;
 
 public class Main {
 	static int n, m;
-	static int[] minEdge,predecessor;
-	static boolean[] visited;
+	static int[] minEdge, predecessor;
+
 	static class Node {
 		int v, cost;
 
@@ -20,20 +20,16 @@ public class Main {
 	static void dijkstra(int start, int end) {
 		minEdge[start] = 0;
 		PriorityQueue<Node> pq = new PriorityQueue<Node>((o1, o2) -> o1.cost - o2.cost);
-		pq.add(new Node(start,0));
-		int count = 0;
-		while(!pq.isEmpty()) {
+		pq.add(new Node(start, 0));
+		while (!pq.isEmpty()) {
 			Node cur = pq.poll();
-			
-			if(cur.cost > minEdge[cur.v]) {
+
+			if (cur.cost > minEdge[cur.v]) {
 				continue;
 			}
-			if(!visited[cur.v]) {
-				visited[cur.v] = true;
-			}
-			for(Node next : adjList.get(cur.v)) {
-				
-				if(!visited[next.v] && minEdge[next.v] >cur.cost + next.cost) {
+			for (Node next : adjList.get(cur.v)) {
+
+				if (minEdge[next.v] > cur.cost + next.cost) {
 					minEdge[next.v] = cur.cost + next.cost;
 					predecessor[next.v] = cur.v;
 					pq.add(new Node(next.v, minEdge[next.v]));
@@ -43,13 +39,13 @@ public class Main {
 		System.out.println(minEdge[end]);
 		ArrayList<Integer> path = new ArrayList<>();
 		int order = end;
-		while(order != start) {
-			path.add(order+1);
+		while (order != start) {
+			path.add(order + 1);
 			order = predecessor[order];
 		}
-		path.add(start+1);
+		path.add(start + 1);
 		Collections.reverse(path);
-		
+
 		System.out.println(path.size());
 
 		for (int city : path) {
@@ -74,14 +70,12 @@ public class Main {
 			adjList.get(from).add(new Node(to, cost));
 		}
 		st = new StringTokenizer(br.readLine());
-		int start = parseInt(st.nextToken())-1;
-		int end = parseInt(st.nextToken())-1;
+		int start = parseInt(st.nextToken()) - 1;
+		int end = parseInt(st.nextToken()) - 1;
 
 		minEdge = new int[n];
 		predecessor = new int[n];
-		visited = new boolean[n];
 		Arrays.fill(minEdge, MAX_VALUE);
-		Arrays.fill(predecessor, -1);
 		dijkstra(start, end);
 	}
 }
