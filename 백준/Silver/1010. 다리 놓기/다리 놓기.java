@@ -25,11 +25,13 @@ public class Main {
         StringTokenizer st;
         int t = parseInt(br.readLine());
         dp = new int[30][30];
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < t; i++) {
             st = new StringTokenizer(br.readLine());
             n = parseInt(st.nextToken());
             m = parseInt(st.nextToken());
-            System.out.println(combination(m, n));
+            sb.append(combination(m,n)).append('\n');
         }
+        System.out.println(sb.toString());
     }
 }
