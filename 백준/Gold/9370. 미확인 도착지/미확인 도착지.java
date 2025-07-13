@@ -7,7 +7,7 @@ public class Main {
     static int n, m, t, s, g, h;
     static int ghDist;
     static ArrayList<ArrayList<Edge>> list;
-    static int[] distS, distG, distH;
+    static int[] dist;
     static PriorityQueue<Node> pq = new PriorityQueue<Node>();
     static StringBuilder sb = new StringBuilder();
 
@@ -75,32 +75,24 @@ public class Main {
                 st = new StringTokenizer(br.readLine());
                 int from = parseInt(st.nextToken()) - 1;
                 int to = parseInt(st.nextToken()) - 1;
-                int weight = parseInt(st.nextToken());
+                int weight = parseInt(st.nextToken()) * 2;
+                if ((from == g && to == h) || (from == h && to == g)) {
+                    weight -= 1;
+                }
                 list.get(from).add(new Edge(to, weight));
                 list.get(to).add(new Edge(from, weight));
-                if ((from == g && to == h) || (from == h && to == g)) {
-                    ghDist = weight;
-                }
             }
-            distS = new int[n];
-            distG = new int[n];
-            distH = new int[n];
-            Arrays.fill(distS, MAX_VALUE);
-            Arrays.fill(distG, MAX_VALUE);
-            Arrays.fill(distH, MAX_VALUE);
-            distS[s] = 0;
-            distG[g] = 0;
-            distH[h] = 0;
-            dijkstra(s, distS);
-            dijkstra(g, distG);
-            dijkstra(h, distH);
+            dist = new int[n];
+            Arrays.fill(dist, MAX_VALUE);
+            dist[s] = 0;
+            dijkstra(s, dist);
             // 출발 -> g + h -> 도착지 + g~h == 출발 -> 도착지 최단경로
             // 반대도 가능
             ArrayList<Integer> result = new ArrayList<>();
             for (int i = 0; i < t; i++) {
                 int end = parseInt(br.readLine()) - 1;
-                if (distS[g] + distH[end] + ghDist == distS[end] ||
-                        distS[h] + distG[end] + ghDist == distS[end]) {
+                if(dist[end] == MAX_VALUE) continue;
+                if (dist[end] % 2 == 1){
                     result.add(end + 1);
                 }
             }
